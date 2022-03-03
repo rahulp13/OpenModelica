@@ -610,7 +610,8 @@ uniontype Function
     fn.path := name;
   end setName;
 
-  function nameConsiderBuiltin "Handles the DAE.mo structure where builtin calls are replaced by their simpler name"
+  function nameConsiderBuiltin
+    "Handles the DAE.mo structure where builtin calls are replaced by their simpler name"
     input Function fn;
     output Absyn.Path path;
   algorithm
@@ -1619,7 +1620,6 @@ uniontype Function
           // argument should be a cref?
           case "change" then true;
           case "der" then true;
-          case "diagonal" then true;
           // Function should not be used in function context.
           case "edge" then true;
           // can have variable number of arguments
@@ -1650,8 +1650,8 @@ uniontype Function
           // argument should be a cref?
           case "pre" then true;
           // needs unboxing and return type fix.
-          case "product" then true;
           case "promote" then true;
+          case "pure" then true;
           case "root" then true;
           case "rooted" then true;
           case "uniqueRoot" then true;
@@ -1666,7 +1666,6 @@ uniontype Function
           case "smooth" then true;
           case "subSample" then true;
           // needs unboxing and return type fix.
-          case "sum" then true;
           case "superSample" then true;
           // unbox args and set return type.
           case "symmetric" then true;
