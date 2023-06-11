@@ -9761,6 +9761,7 @@ void ModelWidgetContainer::currentModelWidgetChanged(QMdiSubWindow *pSubWindow)
 #endif
   MainWindow::instance()->getSimulateModelInteractiveAction()->setEnabled(enabled && oms);
   MainWindow::instance()->getSimulationSetupAction()->setEnabled(enabled && ((modelica && pLibraryTreeItem->isSimulationAllowed()) || (oms)));
+  MainWindow::instance()->getSimulationVSSAction()->setEnabled(enabled && ((modelica && pLibraryTreeItem->isSimulationAllowed())));
   MainWindow::instance()->getCalculateDataReconciliationAction()->setEnabled(enabled && modelica && pLibraryTreeItem->isSimulationAllowed());
   bool accessAnnotation = false;
   if (pLibraryTreeItem && (pLibraryTreeItem->getAccess() >= LibraryTreeItem::packageText

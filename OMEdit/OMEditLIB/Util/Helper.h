@@ -250,6 +250,8 @@ public:
   static QString simulateWithAnimationTip;
   static QString simulationSetup;
   static QString simulationSetupTip;
+  static QString simulationVSS;
+  static QString simulationVSSTip;
   static QString simulation;
   static QString reSimulation;
   static QString interactiveSimulation;

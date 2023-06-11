@@ -168,6 +168,7 @@ SOURCES += Util/Helper.cpp \
   Modeling/DocumentationWidget.cpp \
   Simulation/TranslationFlagsWidget.cpp \
   Simulation/SimulationDialog.cpp \
+  Simulation/VSSDialog.cpp \
   Simulation/SimulationOutputWidget.cpp \
   Simulation/SimulationOutputHandler.cpp \
   Simulation/OpcUaClient.cpp \
@@ -282,6 +283,7 @@ HEADERS  += Util/Helper.h \
   Simulation/SimulationOptions.h \
   Simulation/TranslationFlagsWidget.h \
   Simulation/SimulationDialog.h \
+  Simulation/VSSDialog.h \
   Simulation/SimulationOutputWidget.h \
   Simulation/SimulationOutputHandler.h \
   Simulation/OpcUaClient.h \

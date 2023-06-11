@@ -63,6 +63,7 @@
 #include "TransformationalDebugger/TransformationsWidget.h"
 #include "Options/NotificationsDialog.h"
 #include "Simulation/SimulationDialog.h"
+#include "Simulation/VSSDialog.h"
 #include "TLM/TLMCoSimulationDialog.h"
 #include "FMI/ImportFMUDialog.h"
 #include "FMI/ImportFMUModelDescriptionDialog.h"
@@ -2322,13 +2323,44 @@ void MainWindow::instantiateModel()
 
 /*!
  * \brief MainWindow::openSimulationDialog
- * Opens the Simualtion Dialog.
+ * Opens the Simulation Dialog.
  */
 void MainWindow::openSimulationDialog()
 {
   ModelWidget *pModelWidget = mpModelWidgetContainer->getCurrentModelWidget();
   if (pModelWidget) {
     simulationSetup(pModelWidget->getLibraryTreeItem());
+  }
+}
+
+/*!
+ * \brief MainWindow::openVSSDialog
+ * Opens the VSS Dialog.
+ */
+void MainWindow::openVSSDialog()
+{
+  ModelWidget *pModelWidget = mpModelWidgetContainer->getCurrentModelWidget();
+  if (pModelWidget && pModelWidget->getLibraryTreeItem()) {
+    LibraryTreeItem *pLibraryTreeItem = pModelWidget->getLibraryTreeItem();
+
+    if (pLibraryTreeItem->getLibraryType() == LibraryTreeItem::Modelica) {
+      /* if Modelica text is changed manually by user then validate it before saving. */
+      if (pLibraryTreeItem->getModelWidget()) {
+        if (!pLibraryTreeItem->getModelWidget()->validateText(&pLibraryTreeItem)) {
+          return;
+        }
+      }
+
+      // get the top level LibraryTreeItem
+      LibraryTreeItem *pTopLevelLibraryTreeItem = mpLibraryWidget->getLibraryTreeModel()->getTopLevelLibraryTreeItem(pLibraryTreeItem);
+
+      if (pTopLevelLibraryTreeItem) {
+        // Initialize main dialog with model
+        VSSDialog* pVSSDialog =  new VSSDialog(this, pLibraryTreeItem, mpLibraryWidget->getLibraryTreeModel(), OptionsDialog::instance()->getGeneralSettingsPage()->getWorkingDirectory());
+        // Show dialog
+        pVSSDialog->show();
+      }
+    }
   }
 }
 
@@ -3651,6 +3683,13 @@ void MainWindow::createActions()
   mpSimulationSetupAction->setStatusTip(Helper::simulationSetupTip);
   mpSimulationSetupAction->setEnabled(false);
   connect(mpSimulationSetupAction, SIGNAL(triggered()), SLOT(openSimulationDialog()));
+
+  // vss simulation action
+  mpSimulationVSSAction = new QAction(QIcon(":/Resources/icons/simulation-center.svg"), Helper::simulationVSS, this);
+  mpSimulationVSSAction->setStatusTip(Helper::simulationVSSTip);
+  mpSimulationVSSAction->setEnabled(false);
+  connect(mpSimulationVSSAction, SIGNAL(triggered()), SLOT(openVSSDialog()));
+
   // simulate action
   mpSimulateModelAction = new QAction(QIcon(":/Resources/icons/simulate.svg"), Helper::simulate, this);
   mpSimulateModelAction->setStatusTip(Helper::simulateTip);
@@ -4114,6 +4153,7 @@ void MainWindow::createMenus()
   pSimulationMenu->addAction(mpSimulateModelAction);
   pSimulationMenu->addAction(mpSimulateWithTransformationalDebuggerAction);
   pSimulationMenu->addAction(mpSimulateWithAlgorithmicDebuggerAction);
+  pSimulationMenu->addAction(mpSimulationVSSAction);
 #if !defined(WITHOUT_OSG)
   pSimulationMenu->addAction(mpSimulateWithAnimationAction);
 #endif

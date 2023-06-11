@@ -244,6 +244,8 @@ QString Helper::simulateWithAnimation;
 QString Helper::simulateWithAnimationTip;
 QString Helper::simulationSetup;
 QString Helper::simulationSetupTip;
+QString Helper::simulationVSS;
+QString Helper::simulationVSSTip;
 QString Helper::simulation;
 QString Helper::reSimulation;
 QString Helper::interactiveSimulation;
@@ -552,6 +554,8 @@ void Helper::initHelperVariables()
   Helper::simulateWithAnimationTip = tr("Simulates the Modelica class with Animation");
   Helper::simulationSetup = tr("Simulation Setup");
   Helper::simulationSetupTip = tr("Setup simulation settings");
+  Helper::simulationVSS = tr("Simulate VSS");
+  Helper::simulationVSSTip = tr("Simulates variable-structure model by scheduling it");
   Helper::simulation = tr("Simulation");
   Helper::reSimulation = tr("Re-simulation");
   Helper::interactiveSimulation = tr("Interactive Simulation");

@@ -168,6 +168,7 @@ public:
   QAction* getCloseAllWindowsAction() {return mpCloseAllWindowsAction;}
   QAction* getCloseAllWindowsButThisAction() {return mpCloseAllWindowsButThisAction;}
   QAction* getSimulationSetupAction() {return mpSimulationSetupAction;}
+  QAction* getSimulationVSSAction() {return mpSimulationVSSAction;}
   QAction* getSimulateModelAction() {return mpSimulateModelAction;}
   QAction* getSimulateWithTransformationalDebuggerAction() {return mpSimulateWithTransformationalDebuggerAction;}
   QAction* getSimulateWithAlgorithmicDebuggerAction() {return mpSimulateWithAlgorithmicDebuggerAction;}
@@ -380,6 +381,7 @@ private:
   QAction *mpSimulateModelAction;
   QAction *mpSimulateWithTransformationalDebuggerAction;
   QAction *mpSimulateWithAlgorithmicDebuggerAction;
+  QAction *mpSimulationVSSAction;
 #if !defined(WITHOUT_OSG)
   QAction *mpSimulateWithAnimationAction;
 #endif
@@ -522,6 +524,7 @@ public slots:
   void checkAllModels();
   void instantiateModel();
   void openSimulationDialog();
+  void openVSSDialog();
   void simulateModel();
   void simulateModelWithTransformationalDebugger();
   void simulateModelWithAlgorithmicDebugger();
