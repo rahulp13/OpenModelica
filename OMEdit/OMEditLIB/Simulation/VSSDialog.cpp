@@ -91,7 +91,7 @@ VSSDialog::VSSDialog(QWidget *parent, LibraryTreeItem *pLibraryTreeItem, Library
   }
 
   // OMScheduler python backend path
-  mOMSchedPath = QDir::cleanPath("/home/fossee/Desktop/MSP/OMScheduler"); // QDir::cleanPath(homePath);
+  mOMSchedPath = QDir::cleanPath(homePath);
   // Python executable path
   mPythonBinPath = QDir::cleanPath(pythonExecPath(system));
   // Initialize paths
@@ -232,28 +232,31 @@ void VSSDialog::getResultFileData(QTimer* timer) {
     timer->stop();
 
     QStringList resultList = data.split("::");
-    QString resultName = resultList.at(0);
-    int resultCount = resultList.at(1).toInt();
+    QString resultFileInfo = resultList.at(0);
+    int resultFileCount = resultList.at(1).toInt();
 
-    // Output the read data
-    qDebug() << "Read data: " << resultName << " " << resultCount;
+    QFile resultInfoFile(resultFileInfo);
+    if (resultInfoFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
 
-    int progressValue = 0;
-    QProgressBar* pProgressBar = MainWindow::instance()->getProgressBar();
-    pProgressBar->setRange(0, resultCount);
-    MainWindow::instance()->showProgressBar();
+      int progressValue = 0;
+      QProgressBar* pProgressBar = MainWindow::instance()->getProgressBar();
+      pProgressBar->setRange(0, resultFileCount);
+      MainWindow::instance()->showProgressBar();
 
-    eventFlag = QEventLoop::AllEvents;
+      eventFlag = QEventLoop::AllEvents;
 
-    QString fileName;
-    for(int index = 1; index <= resultCount; index++) {
-      pProgressBar->setValue(++progressValue);
-      fileName = resultName + QString::number(index) + "_res.mat";
-      qDebug() << fileName;
-      MainWindow::instance()->openResultFile(fileName);
+      QTextStream resultFileList(&resultInfoFile);
+      QString resultFileName;
+      while (!resultFileList.atEnd()) {
+        resultFileName = resultFileList.readLine();
+
+        pProgressBar->setValue(++progressValue);
+        MainWindow::instance()->openResultFile(resultFileName);
+      }
+
+      resultInfoFile.close();
+      MainWindow::instance()->hideProgressBar();
     }
-
-    MainWindow::instance()->hideProgressBar();
   }
 
   qDebug() << data;
